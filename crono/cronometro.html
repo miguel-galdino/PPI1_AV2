@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cronômetro</title>
+    <style>body { font-family: sans-serif; padding: 20px; }</style>
+</head>
+<body>
+    <a href="../index.html">Voltar ao Menu</a>
+    <h3>Cronômetro</h3>
+    
+    <h1 id="tempo">00:00:00</h1>
+    
+    <button onclick="iniciar()">Iniciar (I)</button> 
+    <button onclick="pausar()">Pausar (P)</button>
+    <button onclick="zerar()">Zerar (Z)</button>
+
+    <h4>Paradas:</h4>
+    <ul id="lista"></ul>
+
+    <script>
+        let inicio, intervalo, rodando = false, tempoSalvo = 0;
+        const display = document.getElementById('tempo');
+
+        function formatar(ms) {
+            return new Date(ms).toISOString().substr(11, 8);
+        }
+
+        function atualizar() {
+            display.innerText = formatar(tempoSalvo + (Date.now() - inicio));
+        }
+
+        function iniciar() {
+            if (!rodando) {
+                inicio = Date.now();
+                intervalo = setInterval(atualizar, 100);
+                rodando = true;
+            }
+        }
+
+        function pausar() {
+            if (rodando) {
+                clearInterval(intervalo);
+                tempoSalvo += Date.now() - inicio;
+                rodando = false;
+                let li = document.createElement('li');
+                li.innerText = display.innerText;
+                document.getElementById('lista').appendChild(li);
+            }
+        }
+
+        function zerar() {
+            clearInterval(intervalo);
+            rodando = false;
+            tempoSalvo = 0;
+            display.innerText = "00:00:00";
+            document.getElementById('lista').innerHTML = '';
+        }
+
+        document.addEventListener('keydown', e => {
+            if(e.key === 'i') iniciar();
+            if(e.key === 'p') pausar();
+            if(e.key === 'z') zerar();
+        });
+    </script>
+</body>
+</html>

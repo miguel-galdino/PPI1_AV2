@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Notas</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .nota-item { border: 1px solid #ccc; margin: 5px 0; padding: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <a href="../index.html">Voltar ao Menu</a>
+    <h3>Bloco de Notas</h3>
+
+    <input type="hidden" id="idNota">
+    <input type="text" id="titulo" placeholder="Título"><br><br>
+    <textarea id="conteudo" rows="5" cols="30" placeholder="Conteúdo"></textarea><br><br>
+    
+    <button onclick="salvar()">Salvar</button>
+    <button onclick="limparForm()">Nova Nota</button>
+    <button onclick="excluir()">Excluir</button>
+
+    <hr>
+    <div id="listaNotas"></div>
+
+    <script>
+        let notas = JSON.parse(localStorage.getItem('bd_notas')) || [];
+
+        function renderizar() {
+            const div = document.getElementById('listaNotas');
+            div.innerHTML = '';
+            notas.forEach(n => {
+                let d = document.createElement('div');
+                d.className = 'nota-item';
+                d.innerText = n.titulo;
+                d.onclick = () => carregar(n.id);
+                div.appendChild(d);
+            });
+        }
+
+        function carregar(id) {
+            let n = notas.find(x => x.id === id);
+            document.getElementById('idNota').value = n.id;
+            document.getElementById('titulo').value = n.titulo;
+            document.getElementById('conteudo').value = n.conteudo;
+        }
+
+        function salvar() {
+            let id = document.getElementById('idNota').value;
+            let titulo = document.getElementById('titulo').value;
+            let conteudo = document.getElementById('conteudo').value;
+
+            if(id) {
+                let index = notas.findIndex(n => n.id == id);
+                notas[index] = { id, titulo, conteudo };
+            } else {
+                notas.push({ id: Date.now(), titulo, conteudo });
+            }
+            localStorage.setItem('bd_notas', JSON.stringify(notas));
+            renderizar();
+            limparForm();
+        }
+
+        function excluir() {
+            let id = document.getElementById('idNota').value;
+            if(id && confirm('Excluir?')) {
+                notas = notas.filter(n => n.id != id);
+                localStorage.setItem('bd_notas', JSON.stringify(notas));
+                renderizar();
+                limparForm();
+            }
+        }
+
+        function limparForm() {
+            document.getElementById('idNota').value = '';
+            document.getElementById('titulo').value = '';
+            document.getElementById('conteudo').value = '';
+        }
+
+        renderizar();
+    </script>
+</body>
+</html>

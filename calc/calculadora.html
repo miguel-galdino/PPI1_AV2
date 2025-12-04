@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lanh="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+</head>
+<body>
+
+    <div style="text-align: left;">
+            <a href="../index.html" class="btn-voltar">⬅ Voltar ao Menu</a>
+    </div>
+
+    <style>
+
+        body { 
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            margin: 0;
+        }
+
+        #btn-voltar {
+            text-decoration: none; 
+            color: #aaa; 
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: color 0.2s;
+        }
+        .btn-voltar:hover { color: #fff; }
+
+        .calculator {
+            background-color: black;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 320px;
+        }
+
+        .display {
+            background-color: #222;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            height: 50px;
+            text-align: right;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .button {
+            padding: 20px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .button.dark-gray {
+            background-color: #333;
+            color: white;
+        }
+
+        .button.light-gray {
+            background-color: #d3d3d3;
+            color: black;
+        }
+
+        .button.orange {
+            background-color: #ff9500;
+            color: white;
+        }
+
+    </style>
+
+    <div class="calculator">
+        <div class="display" id="display"></div>
+        <div class="buttons">
+            <button class="button light-gray" onclick="clearDisplay()">C</button>
+            <button class="button dark-gray" onclick="appendToDisplay('7')">7</button>
+            <button class="button dark-gray" onclick="appendToDisplay('8')">8</button>
+            <button class="button dark-gray" onclick="appendToDisplay('9')">9</button>
+            <button class="button orange" onclick="appendOperator('/')">/</button>
+            <button class="button dark-gray" onclick="appendToDisplay('4')">4</button>
+            <button class="button dark-gray" onclick="appendToDisplay('5')">5</button>
+            <button class="button dark-gray" onclick="appendToDisplay('6')">6</button>
+            <button class="button orange" onclick="appendOperator('*')">*</button>
+            <button class="button dark-gray" onclick="appendToDisplay('1')">1</button>
+            <button class="button dark-gray" onclick="appendToDisplay('2')">2</button>
+            <button class="button dark-gray" onclick="appendToDisplay('3')">3</button>
+            <button class="button orange" onclick="appendOperator('-')">-</button>          
+            <button class="button orange" onclick="appendOperator('+')">+</button>
+            <button class="button dark-gray" onclick="appendToDisplay('0')">0</button>
+            <button class="button orange" onclick="calculateResult()">=</button>
+        </div>
+    </div>
+
+    <script src="calculadora.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+Aluno: Miguel de Andrade Galdino 
+Materia: Programação para Internet 1
+------------------------------------------------------------
+CALCULADORA JS
+
+Você trata expressões com dois operadores consecutivos? (Ex: 5++5)
+R -> Nao, na função appendOperator(operator), o código apenas verifica se o currentInput esta vazio (if (currentInput === "") return).
+Se já houver um número, ele concatena o operador diretamente (currentInput += operator). Se o usuário clicar em + duas vezes, a string ficará 5++,
+o que gera um erro no eval() posteriormente, tudo dentro da função appendOperator.
+
+Como você constrói a expressão que será enviada para o eval()?
+R -> Através de concatenação de strings na variAvel global currentInput, Cada vez que um número é clicado (appendToDisplay) ou um operador é clicado (appendOperator),
+o valor é somado a string currentInput. No final a função calculateResult() passa essa string completa para o eval(currentInput).
+
+Se o usuário apagar um caractere, como você atualiza a expressão? Onde está essa lógica?
+R -> Eu nao fiz essa funcionalidade, o código tem apenas a função clearDisplay(), que limpa tudo (currentInput = "").
+
+Você usa algum recurso para impedir que letras sejam digitadas no campo da expressão? Como?
+R -> Sim, o campo de visualização é uma div (<div id="display">), e não um <input>, então o usuario nao consegue clicar e digitar livremente com o teclado 
+até porque a entrada de dados é feita pelos botões na tela (onclick), que só tem numeros e simbolos matematicos.
+------------------------------------------------------------
+CRONÔMETRO JS
+
+Como você calcula o tempo decorrido? Onde essa diferença é calculada?
+R -> Subtraindo o horário atual (Date.now()) do horário de início (inicio), somado ao tempo que ja estava salvo antes de uma pausa na função atualizar().
+
+Onde e como você registra as pausas do cronômetro?
+R -> Na função pausar() o registro visual é feito criando um elemento de lista (<li>) e adicionando no HTML.
+
+Ele faz os seguintes passos:
+1: Cria um elemento, let li = document.createElement('li')
+2: Define o texto dele com o valor atual do display, li.innerText = display.innerText
+3: Adiciona à lista (<ul>), document.getElementById('lista').appendChild(li)
+
+Como você atualiza a interface em cada intervalo de tempo?
+R -> Usando o setInterval na função iniciar(), o código executa intervalo = setInterval(atualizar, 100) por conta disso a função atualizar()
+é chamada automaticamente a cada 100 milissegundos, recalculando o tempo e mudando o texto na tela.
+
+Como você zera o cronômetro? Em qual função isso ocorre?
+R -> Na função zerar(), ela para a contagem em clearInterval(intervalo), reseta as variáveis de controle "rodando = false; tempoSalvo = 0",
+Reseta o texto visual em "display.innerText = "00:00:00"" e limpa a lista de voltas em "document.getElementById('lista').innerHTML = ''"
+
+Onde você configura os atalhos de teclado?
+R -> No final do script atraves do (EventListener)
+"document.addEventListener('keydown', e => { ... })"
+------------------------------------------------------------
+BLOCO DE NOTAS 
+
+Como você salva uma nova nota?
+R -> Na função salvar() o código verifica se o campo oculto idNota tem valor, se não tem ID (é vazio), ele cria um novo objeto com id: Date.now() e usa o método 
+.push() para adicionar ao array notas e se tem ID, ele busca o indice da nota existente (findIndex) e substitui os dados no indice (atualização)
+
+A nota salva no localStorage é um JSON, texto ou HTML? Em qual linha isso é salvo?
+R -> É salva como uma String (texto) que representa um JSON na linha "localStorage.setItem('bd_notas', JSON.stringify(notas));" O JSON.stringify converte o
+array de objetos em uma string para que o navegador possa armazenar
+
+Como você recupera as notas e exibe elas?
+Recuperar -> No inicio do script com "JSON.parse(localStorage.getItem('bd_notas'))" o JSON.parse converte a string de volta para um Array de objetos
+Exibe -> Na função renderizar() ela limpa a div da lista e usa um laço de repetição (forEach) para criar e adicionar uma div (class="nota-item") para cada 
+nota encontrada no array.
+
+Se o localStorage estiver vazio, o que seu código faz?
+R -> Ele inicia a variavel notas com um array vazio [] na linha "let notas = JSON.parse(localStorage.getItem('bd_notas')) || [];"
+com isso o operador || garante se o getItem retornar null a variável assumirá o valor [] (array vazio), assim evita erro ao tentar fazer o .push ou .forEach depois.
